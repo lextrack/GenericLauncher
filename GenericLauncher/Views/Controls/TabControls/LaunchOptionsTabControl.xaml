@@ -1,0 +1,135 @@
+﻿<UserControl x:Class="GenericLauncher.Views.Controls.TabControls.LaunchOptionsTabControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:GenericLauncher.Views.Controls.TabControls"
+             mc:Ignorable="d">
+
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <Grid Margin="10">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <TextBlock Grid.Row="0" Text="Launch Configuration" FontWeight="Bold" Margin="0,0,0,10" FontSize="16"/>
+
+            <!-- Launch parameters -->
+            <Grid Grid.Row="1" Margin="0,5,0,10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="150"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <TextBlock Grid.Row="0" Grid.Column="0" Text="Launch Parameters:" FontWeight="Bold" Margin="0,5"/>
+                <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding SelectedItem.LaunchParameters, UpdateSourceTrigger=PropertyChanged}" 
+                        Margin="0,5,0,5" ToolTip="Command line arguments to pass to the application"/>
+
+                <!-- Working directory -->
+                <TextBlock Grid.Row="1" Grid.Column="0" Text="Working Directory:" FontWeight="Bold" Margin="0,5"/>
+                <Grid Grid.Row="1" Grid.Column="1" Margin="0,5,0,5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBox Grid.Column="0" Text="{Binding SelectedItem.WorkingDirectory, UpdateSourceTrigger=PropertyChanged}"/>
+                    <Button Grid.Column="1" Content="..." Command="{Binding SelectWorkingDirectoryCommand}" Width="30"/>
+                </Grid>
+            </Grid>
+
+            <!-- Launch options -->
+            <GroupBox Grid.Row="2" Header="Launch Options" Margin="0,10,0,10">
+                <StackPanel Margin="5">
+                    <CheckBox Content="Run as administrator" IsChecked="{Binding SelectedItem.RunAsAdmin}" Margin="0,5"/>
+                    <CheckBox Content="Run with high priority" IsChecked="{Binding SelectedItem.RunHighPriority}" Margin="0,5"
+                        ToolTip="Runs the application with higher CPU priority for better performance"/>
+                    <CheckBox Content="Close launcher after starting application" IsChecked="{Binding SelectedItem.CloseLauncherOnStart}" Margin="0,5"/>
+                </StackPanel>
+            </GroupBox>
+
+            <!-- Pre/Post launch settings -->
+            <GroupBox Grid.Row="3" Header="Pre/Post Launch Actions" Margin="0,10,0,0">
+                <StackPanel Margin="5">
+                    <!-- Pre-launch section -->
+                    <Expander Header="Pre-Launch Actions" Margin="0,5" IsExpanded="True">
+                        <StackPanel Margin="10,5">
+                            <CheckBox Content="Close specified applications before launch" 
+                                  Margin="0,5" 
+                                  IsChecked="{Binding SelectedItem.LaunchActions.CloseOtherApps}" 
+                                  ToolTip="Closes specified applications before launching"/>
+                            <Grid Margin="20,5,0,5" IsEnabled="{Binding SelectedItem.LaunchActions.CloseOtherApps}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBox Grid.Column="0" 
+                                     Text="{Binding SelectedItem.LaunchActions.AppsToClose, UpdateSourceTrigger=PropertyChanged}" 
+                                     ToolTip="Comma-separated list of application process names to close"/>
+                                <Button Grid.Column="1" 
+                                    Content="Check" 
+                                    Width="60" 
+                                    Command="{Binding LaunchActionsViewModel.SelectAppsToCloseCommand}"/>
+                            </Grid>
+
+                            <CheckBox Content="Run custom script before launch" 
+                                  Margin="0,5" 
+                                  IsChecked="{Binding SelectedItem.LaunchActions.RunPreLaunchScript}"/>
+                            <Grid Margin="20,5,0,5" IsEnabled="{Binding SelectedItem.LaunchActions.RunPreLaunchScript}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBox Grid.Column="0" 
+                                    Text="{Binding SelectedItem.LaunchActions.PreLaunchScriptPath, UpdateSourceTrigger=PropertyChanged}"/>
+                                <Button Grid.Column="1" 
+                                    Content="..." 
+                                    Width="30" 
+                                    Command="{Binding LaunchActionsViewModel.SelectPreLaunchScriptCommand}"/>
+                            </Grid>
+                        </StackPanel>
+                    </Expander>
+
+                    <!-- Post-exit section -->
+                    <Expander Header="Post-Exit Actions" Margin="0,5" IsExpanded="True">
+                        <StackPanel Margin="10,5">
+                            <CheckBox Content="Run custom script after application exits" 
+                          Margin="0,5" 
+                          IsChecked="{Binding SelectedItem.LaunchActions.RunPostExitScript}"/>
+                            <Grid Margin="20,5,0,5" IsEnabled="{Binding SelectedItem.LaunchActions.RunPostExitScript}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBox Grid.Column="0" 
+                                     Text="{Binding SelectedItem.LaunchActions.PostExitScriptPath, UpdateSourceTrigger=PropertyChanged}"/>
+                                <Button Grid.Column="1" 
+                                    Content="..." 
+                                    Width="30" 
+                                    Command="{Binding LaunchActionsViewModel.SelectPostExitScriptCommand}"/>
+                            </Grid>
+                        </StackPanel>
+                    </Expander>
+
+                    <!-- Test buttons -->
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,10,0,0">
+                        <Button Content="Test pre-launch" 
+                            Width="120" 
+                            Command="{Binding LaunchActionsViewModel.TestPreLaunchCommand}" 
+                            Margin="5"/>
+                        <Button Content="Test post-exit" 
+                            Width="120" 
+                            Command="{Binding LaunchActionsViewModel.TestPostExitCommand}" 
+                            Margin="5"/>
+                    </StackPanel>
+                </StackPanel>
+            </GroupBox>
+        </Grid>
+    </ScrollViewer>
+</UserControl>
