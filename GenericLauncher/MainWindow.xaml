@@ -1,0 +1,52 @@
+﻿<Window x:Class="GenericLauncher.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:GenericLauncher"
+        xmlns:viewmodels="clr-namespace:GenericLauncher.ViewModels"
+        xmlns:controls="clr-namespace:GenericLauncher.Views.Controls"
+        mc:Ignorable="d"
+        Title="Generic Launcher" Width="1200" Height="720"
+        Background="#172330"
+        AllowDrop="True">
+    <Window.Resources>
+        <ResourceDictionary Source="Styles/AppStyles.xaml"/>
+    </Window.Resources>
+
+    <Window.DataContext>
+        <viewmodels:MainViewModel/>
+    </Window.DataContext>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Top bar with search and filters -->
+        <controls:TopBarControl Grid.Row="0"/>
+
+        <!-- Main content -->
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="250"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- Left panel: List of items -->
+            <controls:ItemListControl Grid.Column="0"/>
+
+            <!-- Right panel: Item details -->
+            <controls:ItemDetailsControl Grid.Column="1"/>
+
+            <!-- Message when no item is selected -->
+            <TextBlock Grid.Column="1" 
+                       Text="Select an item from the list or add a new one" 
+                       HorizontalAlignment="Center" 
+                       VerticalAlignment="Center"
+                       FontSize="18"
+                       Visibility="{Binding IsItemSelected, Converter={StaticResource InverseBooleanToVisibilityConverter}}"/>
+        </Grid>
+    </Grid>
+</Window>

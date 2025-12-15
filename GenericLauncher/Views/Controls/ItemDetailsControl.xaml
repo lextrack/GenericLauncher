@@ -1,0 +1,178 @@
+﻿<UserControl x:Class="GenericLauncher.Views.Controls.ItemDetailsControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:GenericLauncher.Views.Controls"
+             xmlns:tabcontrols="clr-namespace:GenericLauncher.Views.Controls.TabControls"
+             mc:Ignorable="d">
+
+    <Grid Margin="20" Visibility="{Binding IsItemSelected, Converter={StaticResource BooleanToVisibilityConverter}}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Background Image with blur effect that covers the entire details section -->
+        <Border Grid.RowSpan="3" Margin="-20" Visibility="{Binding SelectedItem.HasImage, Converter={StaticResource BooleanToVisibilityConverter}}">
+            <Border.Background>
+                <ImageBrush ImageSource="{Binding SelectedItem.Image}" 
+                        Stretch="UniformToFill" 
+                        Opacity="0.60"
+                        RenderOptions.BitmapScalingMode="HighQuality">
+                    <ImageBrush.RelativeTransform>
+                        <ScaleTransform ScaleX="1.1" ScaleY="1.1" CenterX="0.5" CenterY="0.5"/>
+                    </ImageBrush.RelativeTransform>
+                </ImageBrush>
+            </Border.Background>
+            <Border.Effect>
+                <BlurEffect Radius="20"/>
+            </Border.Effect>
+        </Border>
+
+        <!-- Dark overlay to improve text readability -->
+        <Border Grid.RowSpan="3" Background="#152536" Opacity="0.70" Margin="-20"/>
+
+        <!-- Header with item information -->
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <TextBlock Grid.Column="0" Text="{Binding SelectedItem.Title}" 
+                   FontSize="24" FontWeight="Bold" Margin="0,0,0,10"/>
+
+            <!-- Favorite button with no border -->
+            <Button Grid.Column="1" Command="{Binding ToggleFavoriteCommand}"
+                Width="40" Height="40" Background="Transparent" 
+                BorderThickness="0" Cursor="Hand">
+                <Button.Template>
+                    <ControlTemplate TargetType="Button">
+                        <Grid Background="Transparent">
+                            <TextBlock Text="★" FontSize="24" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                <TextBlock.Style>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="Foreground" Value="#555555"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding SelectedItem.IsFavorite}" Value="True">
+                                                <Setter Property="Foreground" Value="Gold"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
+                        </Grid>
+                    </ControlTemplate>
+                </Button.Template>
+            </Button>
+        </Grid>
+
+        <!-- Item data and categories -->
+        <TabControl Grid.Row="0" Grid.RowSpan="2" BorderThickness="0" Background="Transparent" Margin="0,40,0,10">
+            <TabItem Header="Information">
+                <tabcontrols:InformationTabControl/>
+            </TabItem>
+
+            <TabItem Header="Categories">
+                <tabcontrols:CategoriesTabControl/>
+            </TabItem>
+
+            <!-- Statistics tab -->
+            <TabItem Header="Stats">
+                <tabcontrols:StatsTabControl/>
+            </TabItem>
+
+            <!-- Notes tab -->
+            <TabItem Header="Notes">
+                <tabcontrols:NotesTabControl/>
+            </TabItem>
+
+            <!-- Launch Options tab -->
+            <TabItem Header="Launch Options">
+                <tabcontrols:LaunchOptionsTabControl/>
+            </TabItem>
+        </TabControl>
+
+        <!-- Bottom buttons - Improved with sharpness -->
+        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,10,0,0">
+            <Button Content="Select image" 
+                Command="{Binding SelectImageCommand}"
+                Style="{StaticResource PrimaryButton}" 
+                Width="160" Height="40" Margin="0,0,10,0"
+                FontSize="14"
+                UseLayoutRounding="True"
+                SnapsToDevicePixels="True"/>
+
+            <!-- Launch/Stop button Improved -->
+            <Button Width="150" FontWeight="Bold" 
+                Command="{Binding LaunchOrStopItemCommand}"
+                UseLayoutRounding="True"
+                SnapsToDevicePixels="True">
+                <Button.Style>
+                    <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+                        <!-- Default style (LAUNCH) -->
+                        <Setter Property="Content" Value="LAUNCH"/>
+                        <Setter Property="Background" Value="{StaticResource SuccessBrush}"/>
+                        <Setter Property="Foreground" Value="White"/>
+                        <Setter Property="FontSize" Value="14"/>
+                        <Setter Property="FontWeight" Value="Bold"/>
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="Button">
+                                    <Border x:Name="border" 
+                                    Background="{TemplateBinding Background}" 
+                                    BorderBrush="{TemplateBinding BorderBrush}" 
+                                    BorderThickness="{TemplateBinding BorderThickness}"
+                                    CornerRadius="6"
+                                    UseLayoutRounding="True"
+                                    SnapsToDevicePixels="True">
+                                        <Border.Effect>
+                                            <DropShadowEffect ShadowDepth="2" Direction="320" 
+                                                        Color="#33000000" BlurRadius="4" Opacity="0.4"/>
+                                        </Border.Effect>
+                                        <ContentPresenter HorizontalAlignment="Center" 
+                                                    VerticalAlignment="Center"
+                                                    Margin="{TemplateBinding Padding}"
+                                                    UseLayoutRounding="True"
+                                                    SnapsToDevicePixels="True"/>
+                                    </Border>
+                                    <ControlTemplate.Triggers>
+
+                                    </ControlTemplate.Triggers>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+
+                        <Style.Triggers>
+                            <!-- Mouse over effect para el botón LAUNCH -->
+                            <MultiDataTrigger>
+                                <MultiDataTrigger.Conditions>
+                                    <Condition Binding="{Binding SelectedItem.IsRunning}" Value="False"/>
+                                    <Condition Binding="{Binding IsMouseOver, RelativeSource={RelativeSource Self}}" Value="True"/>
+                                </MultiDataTrigger.Conditions>
+                                <Setter Property="Background" Value="{StaticResource SuccessHoverBrush}"/>
+                            </MultiDataTrigger>
+
+                            <!-- When app is running, change to STOP -->
+                            <DataTrigger Binding="{Binding SelectedItem.IsRunning}" Value="True">
+                                <Setter Property="Content" Value="STOP"/>
+                                <Setter Property="Background" Value="{StaticResource DangerBrush}"/>
+                            </DataTrigger>
+
+                            <!-- Mouse over effect on STOP button -->
+                            <MultiDataTrigger>
+                                <MultiDataTrigger.Conditions>
+                                    <Condition Binding="{Binding SelectedItem.IsRunning}" Value="True"/>
+                                    <Condition Binding="{Binding IsMouseOver, RelativeSource={RelativeSource Self}}" Value="True"/>
+                                </MultiDataTrigger.Conditions>
+                                <Setter Property="Background" Value="{StaticResource DangerHoverBrush}"/>
+                            </MultiDataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+            </Button>
+        </StackPanel>
+    </Grid>
+</UserControl>

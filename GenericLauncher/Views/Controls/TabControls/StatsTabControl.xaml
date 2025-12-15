@@ -1,0 +1,85 @@
+﻿<UserControl x:Class="GenericLauncher.Views.Controls.TabControls.StatsTabControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:GenericLauncher.Views.Controls.TabControls"
+             mc:Ignorable="d">
+
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Row="0" Text="Usage Statistics" FontWeight="Bold" Margin="0,0,0,10" FontSize="16"/>
+
+        <!-- Usage statistics expanded section -->
+        <Grid Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="170"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- Basic Usage Stats Section -->
+            <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Text="Basic Usage Statistics" 
+                    FontWeight="SemiBold" Margin="0,5,0,10" Foreground="#66C0F4"/>
+
+            <!-- Usage time stats -->
+            <TextBlock Grid.Row="1" Grid.Column="0" Text="Total usage time:" FontWeight="Bold" Margin="0,5"/>
+            <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding SelectedItem.UsageTime, StringFormat='{}{0:d\\d\\ h\\h\\ m\\m\\ s\\s}'}" Margin="10,5,0,5"/>
+
+            <!-- First used date -->
+            <TextBlock Grid.Row="2" Grid.Column="0" Text="First used:" FontWeight="Bold" Margin="0,5"/>
+            <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding SelectedItem.FirstUsed, StringFormat='{}{0:d MMMM yyyy}'}" Margin="10,5,0,5"/>
+
+            <!-- Last session -->
+            <TextBlock Grid.Row="3" Grid.Column="0" Text="Last session:" FontWeight="Bold" Margin="0,5"/>
+            <TextBlock Grid.Row="3" Grid.Column="1" Text="{Binding SelectedItem.LastUsed, StringFormat='{}{0:d MMMM yyyy HH:mm}'}" Margin="10,5,0,5"/>
+
+            <!-- Total launches -->
+            <TextBlock Grid.Row="4" Grid.Column="0" Text="Total launches:" FontWeight="Bold" Margin="0,5"/>
+            <TextBlock Grid.Row="4" Grid.Column="1" Text="{Binding SelectedItem.LaunchCount}" Margin="10,5,0,5"/>
+
+            <!-- Advanced Stats Section -->
+            <TextBlock Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" Text="Advanced Statistics" 
+                    FontWeight="SemiBold" Margin="0,20,0,10" Foreground="#66C0F4"/>
+
+            <!-- Average session time -->
+            <TextBlock Grid.Row="6" Grid.Column="0" Text="Average session:" FontWeight="Bold" Margin="0,5"/>
+            <TextBlock Grid.Row="6" Grid.Column="1" 
+                     Text="{Binding SelectedItem.AverageSessionTime, StringFormat='{}{0:h\\h\\ m\\m\\ s\\s}', FallbackValue='N/A'}" 
+                     Margin="10,5,0,5"/>
+
+            <!-- Days since first use -->
+            <TextBlock Grid.Row="7" Grid.Column="0" Text="Days owned:" FontWeight="Bold" Margin="0,5"/>
+            <TextBlock Grid.Row="7" Grid.Column="1" 
+                     Text="{Binding SelectedItem.DaysOwned, FallbackValue=0}" 
+                     Margin="10,5,0,5"/>
+
+            <!-- Usage frequency -->
+            <TextBlock Grid.Row="8" Grid.Column="0" Text="Usage frequency:" FontWeight="Bold" Margin="0,5"/>
+            <TextBlock Grid.Row="8" Grid.Column="1" 
+                     Text="{Binding SelectedItem.UsageFrequencyText, FallbackValue='N/A'}" 
+                     Margin="10,5,0,5"/>
+
+            <TextBlock Grid.Row="9" Grid.Column="0" Text="Time spent:" FontWeight="Bold" Margin="0,5"/>
+            <StackPanel Grid.Row="9" Grid.Column="1" Orientation="Horizontal" Margin="10,5,0,5">
+                <TextBlock Text="{Binding SelectedItem.UsagePercentage, StringFormat='{}{0:F2}%', FallbackValue='0%'}"/>
+                <TextBlock Text=" of time since first use" Margin="0,1,0,0"/>
+            </StackPanel>
+        </Grid>
+    </Grid>
+</UserControl>

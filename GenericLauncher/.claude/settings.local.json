@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(dotnet clean:*)",
+      "Bash(dotnet build:*)",
+      "Bash(dotnet run)",
+      "Bash(taskkill:*)",
+      "Bash(Stop-Process -Name \"GenericLauncher\" -Force)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

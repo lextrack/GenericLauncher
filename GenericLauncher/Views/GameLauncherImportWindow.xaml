@@ -1,0 +1,189 @@
+<Window x:Class="GenericLauncher.Views.GameLauncherImportWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Import Games from Launchers" Height="600" Width="800"
+        Background="#172330"
+        WindowStartupLocation="CenterOwner">
+    <Window.Resources>
+        <ResourceDictionary Source="/Styles/AppStyles.xaml"/>
+    </Window.Resources>
+
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <TextBlock Grid.Row="0"
+                   Text="Import Games from Launchers"
+                   FontSize="24"
+                   FontWeight="Bold"
+                   Foreground="White"
+                   Margin="0,0,0,10"/>
+
+        <!-- Instructions -->
+        <TextBlock Grid.Row="1"
+                   TextWrapping="Wrap"
+                   Foreground="#CCCCCC"
+                   Margin="0,0,0,15">
+            <Run Text="Select games from your installed game launchers to add to your library."/>
+            <LineBreak/>
+            <Run Text="Games already in your library will not be shown."/>
+        </TextBlock>
+
+        <!-- Launcher Status -->
+        <Border Grid.Row="2"
+                Background="{StaticResource CardBrush}"
+                BorderBrush="{StaticResource DarkCardBrush}"
+                BorderThickness="1"
+                CornerRadius="6"
+                Padding="15"
+                Margin="0,0,0,15">
+            <StackPanel>
+                <TextBlock Text="Detected Launchers:"
+                           FontSize="14"
+                           FontWeight="SemiBold"
+                           Foreground="White"
+                           Margin="0,0,0,10"/>
+                <ItemsControl x:Name="LauncherStatusList">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Grid Margin="0,2">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="150"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0"
+                                           Text="{Binding Name}"
+                                           Foreground="White"
+                                           FontSize="12"/>
+                                <TextBlock Grid.Column="1"
+                                           FontSize="12">
+                                    <TextBlock.Style>
+                                        <Style TargetType="TextBlock">
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding IsInstalled}" Value="True">
+                                                    <Setter Property="Foreground" Value="#27AE60"/>
+                                                    <Setter Property="Text" Value="{Binding GameCount, StringFormat='✓ Installed ({0} games found)'}"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding IsInstalled}" Value="False">
+                                                    <Setter Property="Foreground" Value="#888888"/>
+                                                    <Setter Property="Text" Value="✗ Not installed"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBlock.Style>
+                                </TextBlock>
+                            </Grid>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </StackPanel>
+        </Border>
+
+        <!-- Games List -->
+        <Border Grid.Row="3"
+                Background="{StaticResource CardBrush}"
+                BorderBrush="{StaticResource DarkCardBrush}"
+                BorderThickness="1"
+                CornerRadius="6"
+                Margin="0,0,0,15">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <!-- Select All / None -->
+                <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="10,10,10,5">
+                    <Button Content="Select All"
+                            Click="SelectAll_Click"
+                            Style="{StaticResource SecondaryButton}"
+                            Padding="10,5"
+                            Margin="0,0,5,0"/>
+                    <Button Content="Select None"
+                            Click="SelectNone_Click"
+                            Style="{StaticResource SecondaryButton}"
+                            Padding="10,5"/>
+                </StackPanel>
+
+                <!-- Scrollable list -->
+                <ScrollViewer Grid.Row="1"
+                              VerticalScrollBarVisibility="Auto"
+                              Margin="5">
+                    <ItemsControl x:Name="GamesListBox" ItemsSource="{Binding}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Border Background="#1E2C3A"
+                                        Margin="5"
+                                        Padding="10"
+                                        CornerRadius="4">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                        </Grid.ColumnDefinitions>
+
+                                        <!-- Checkbox -->
+                                        <CheckBox Grid.Column="0"
+                                                  IsChecked="{Binding IsSelected}"
+                                                  VerticalAlignment="Center"
+                                                  Margin="0,0,10,0"/>
+
+                                        <!-- Game Info -->
+                                        <StackPanel Grid.Column="1">
+                                            <TextBlock Text="{Binding Name}"
+                                                       FontWeight="SemiBold"
+                                                       FontSize="14"
+                                                       Foreground="White"/>
+                                            <TextBlock Text="{Binding Path}"
+                                                       FontSize="11"
+                                                       Foreground="#888888"
+                                                       TextTrimming="CharacterEllipsis"/>
+                                        </StackPanel>
+
+                                        <!-- Launcher badge -->
+                                        <Border Grid.Column="2"
+                                                Background="{StaticResource PrimaryBrush}"
+                                                CornerRadius="3"
+                                                Padding="8,3"
+                                                VerticalAlignment="Center">
+                                            <TextBlock Text="{Binding Launcher}"
+                                                       FontSize="11"
+                                                       Foreground="White"/>
+                                        </Border>
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </ScrollViewer>
+            </Grid>
+        </Border>
+
+        <!-- Bottom buttons -->
+        <StackPanel Grid.Row="4"
+                    Orientation="Horizontal"
+                    HorizontalAlignment="Right">
+            <TextBlock x:Name="CountTextBlock"
+                       VerticalAlignment="Center"
+                       Foreground="White"
+                       Margin="0,0,15,0"
+                       FontSize="14"/>
+            <Button Content="Import Selected"
+                    Click="Import_Click"
+                    Style="{StaticResource SuccessButton}"
+                    Width="150"
+                    Margin="0,0,10,0"/>
+            <Button Content="Cancel"
+                    Click="Cancel_Click"
+                    Style="{StaticResource SecondaryButton}"
+                    Width="100"/>
+        </StackPanel>
+    </Grid>
+</Window>
