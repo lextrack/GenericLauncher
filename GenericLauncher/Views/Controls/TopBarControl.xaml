@@ -256,6 +256,26 @@
                             </Border.Style>
                         </Border>
 
+                        <!-- Item: Clear Library -->
+                        <Border x:Name="ClearLibraryBorder" Cursor="Hand">
+                            <TextBlock Text="Clear Library" Padding="10,8" Foreground="#E57373">
+                                <TextBlock.InputBindings>
+                                    <MouseBinding MouseAction="LeftClick"
+                                                  Command="{Binding ClearLibraryCommand}"/>
+                                </TextBlock.InputBindings>
+                            </TextBlock>
+                            <Border.Style>
+                                <Style TargetType="Border">
+                                    <Setter Property="Background" Value="Transparent"/>
+                                    <Style.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter Property="Background" Value="#55E57373"/>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Border.Style>
+                        </Border>
+
                         <!-- Separator -->
                         <Separator Background="{StaticResource DarkCardBrush}" Margin="2,1"/>
 
@@ -263,7 +283,7 @@
                         <Border x:Name="AboutBorder" Cursor="Hand">
                             <TextBlock Text="About" Padding="10,8" Foreground="White">
                                 <TextBlock.InputBindings>
-                                    <MouseBinding MouseAction="LeftClick" 
+                                    <MouseBinding MouseAction="LeftClick"
                                                   Command="{Binding ShowAboutCommand}"/>
                                 </TextBlock.InputBindings>
                             </TextBlock>

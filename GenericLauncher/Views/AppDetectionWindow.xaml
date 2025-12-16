@@ -1,7 +1,7 @@
 <Window x:Class="GenericLauncher.Views.AppDetectionWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Auto-Detect Applications" Height="500" Width="700"
+        Title="Auto-Detect Applications" Height="700" Width="850"
         Background="#172330"
         WindowStartupLocation="CenterOwner">
     <Window.Resources>

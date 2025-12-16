@@ -66,6 +66,7 @@ namespace GenericLauncher.ViewModels
         {
             AddItemCommand = new RelayCommand(AddItem);
             RemoveItemCommand = new RelayCommand(RemoveItem, CanRemoveItem);
+            ClearLibraryCommand = new RelayCommand(ClearLibrary, CanClearLibrary);
 
             LaunchItemCommand = new RelayCommand(LaunchItem, CanLaunchItem);
             StopItemCommand = new RelayCommand(StopItem, CanStopItem);
@@ -156,6 +157,7 @@ namespace GenericLauncher.ViewModels
         public ICommand AddCategoryWithResetCommand { get; private set; }
         public ICommand AddItemCommand { get; private set; }
         public ICommand RemoveItemCommand { get; private set; }
+        public ICommand ClearLibraryCommand { get; private set; }
         public ICommand LaunchItemCommand { get; private set; }
         public ICommand SelectImageCommand { get; private set; }
         public ICommand SelectItemPathCommand { get; private set; }
@@ -225,6 +227,33 @@ namespace GenericLauncher.ViewModels
                     _itemsManager.RemoveItem(SelectedItem);
                     SelectedItem = null;
                 }
+            }
+        }
+
+        private bool CanClearLibrary()
+        {
+            return Items.Count > 0 && !Items.Any(item => item.IsRunning);
+        }
+
+        private void ClearLibrary()
+        {
+            var result = System.Windows.MessageBox.Show(
+                $"Are you sure you want to clear the entire library?\n\n" +
+                $"This will permanently delete all {Items.Count} application(s) including:\n" +
+                "• All statistics and usage time\n" +
+                "• All notes and categories\n" +
+                "• All launch settings\n\n" +
+                "This action cannot be undone.",
+                "Confirm Clear Library",
+                System.Windows.MessageBoxButton.YesNo,
+                System.Windows.MessageBoxImage.Warning);
+
+            if (result == System.Windows.MessageBoxResult.Yes)
+            {
+                Items.Clear();
+                SelectedItem = null;
+                UpdateAllCategories();
+                SaveItems();
             }
         }
 

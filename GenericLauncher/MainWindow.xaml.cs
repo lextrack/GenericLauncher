@@ -75,13 +75,6 @@ namespace GenericLauncher
                     {
                         viewModel.SaveItems();
                         viewModel.UpdateAllCategories();
-
-                        MessageBox.Show(
-                            $"Successfully added {importedCount} application(s) to your library!\n\n" +
-                            "The icons have been automatically extracted.",
-                            "Import Complete",
-                            MessageBoxButton.OK,
-                            MessageBoxImage.Information);
                     }
                 }
             }

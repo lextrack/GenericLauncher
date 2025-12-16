@@ -8,6 +8,9 @@
     <UseWPF>true</UseWPF>
     <EnableDefaultApplicationDefinition>true</EnableDefaultApplicationDefinition>
     <ApplicationIcon>Resources\icon.ico</ApplicationIcon>
+    <Company>Lextrack</Company>
+    <Copyright>Lextrack</Copyright>
+    <Authors>lextrack</Authors>
   </PropertyGroup>
 
   <ItemGroup>

@@ -7,7 +7,7 @@
         xmlns:viewmodels="clr-namespace:GenericLauncher.ViewModels"
         xmlns:controls="clr-namespace:GenericLauncher.Views.Controls"
         mc:Ignorable="d"
-        Title="Generic Launcher" Width="1200" Height="720"
+        Title="Generic Launcher" Width="1280" Height="720"
         Background="#172330"
         AllowDrop="True">
     <Window.Resources>
