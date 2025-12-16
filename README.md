@@ -5,6 +5,7 @@
 
 <img src="./GenericLauncher/Captures/1.png">
 <img src="./GenericLauncher/Captures/2.png">
+<img src="./GenericLauncher/Captures/2.png">
 
 ## Description
 
